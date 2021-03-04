@@ -1,0 +1,49 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head>
+  <title> activities for athlete</title>
+  <meta name="viewport" content="width=device-width" initial-scale="1.0">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+
+  <script>
+    $(document).ready(function(){
+      var date_input=$('input[id="date"]'); //our date input has the name "date"
+      var container=$('.dates form').length>0 ? $('.dates form').parent() : "body";
+      var options={
+        format: 'dd/mm/yyyy',
+        startDate: "1/1/1990",
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      {% if user.is_authenticated %}
+        <h3 class="text-center mt-3">
+          You are signed in as <strong>{{ user.username }}</strong> /
+          <a href="{% url 'logout' %}">logout</a>
+        </h3>
+      {% endif %}
+    </header>
+    <main>
+      {% for message in messages %}
+        <p style="color: {% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% endif %}">
+          {{ message }}
+        </p>
+      {% endfor %}
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+</body>
+</html>

@@ -15,10 +15,7 @@ class User(AbstractUser):
 
 
     def save(self, *args, **kwargs):
-        """Make sure if the user belongs to a deployment, it cannot be staff"""
-        if self.deployment_id:
-            self.is_staff = False
-            self.is_superuser = False
+
         super().save(*args, **kwargs)
 
     def has_read_permission(self, user):
