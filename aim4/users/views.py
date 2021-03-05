@@ -39,6 +39,7 @@ def home(request):
         page = request.GET.get('page')
 
         # get access token
+        strava_social = request.user.social_auth.get(provider='strava')
         token = strava_social.extra_data['access_token']
 
         # get activity details
