@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # Project apps
     'aim4.users',
+    'aim4.challenges',
 ]
 
 MIDDLEWARE = [
