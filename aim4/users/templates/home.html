@@ -1,3 +1,65 @@
 {% extends 'base.html' %}
 
-User home
+{% block content %}
+
+{% if strava_connected %}
+
+    {% if from_date and to_date %}
+    <h3 class="text-center mt-3">Activities between {{ from_date }} and {{ to_date }}.</h3>
+    {% elif from_date %}
+    <h3 class="text-center mt-3">Activities from {{ from_date }}.</h3>
+    {% elif to_date %}
+    <h3 class="text-center mt-3">Activities to {{ to_date }}.</h3>
+    {% endif %}
+    <hr/>
+    <div class="dates">
+        <form method="get">
+            <div class="form-group">
+                <label class="control-label" for="date">From</label>
+                <input class="form-control" id="date" name="from_date" placeholder="DD/MM/YYYY" type="text" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="date">To</label>
+                <input class="form-control" id="date" name="to_date" placeholder="DD/MM/YYYY" type="text" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary " name="submit" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <hr/>
+
+    <ul class="pagination justify-content-center mt-3">
+        {% if activities.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ activities.previous_page_number }}&from_date={{ from_date }}&to_date={{ to_date }}"><i class="fa fa-angle-left"></i></a></li>
+        {% endif %}
+        {% for page_num in activities.paginator.page_range %}
+        <li {% if page_num == activities.number %}class="active page-item"{% endif %}><a class="page-link" href="?page={{ page_num }}&from_date={{ from_date }}&to_date={{ to_date }}">{{ page_num }}</a></li>
+        {% endfor %}
+        {% if activities.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ activities.next_page_number }}&from_date={{ from_date }}&to_date={{ to_date }}"><i class="fa fa-angle-right"></i></a></li>
+        {% endif%}
+    </ul>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Distance</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+    {% for activity in activities %}
+        <tr>
+            <td>{{ activity.type }}</td>
+            <td><a href="{{ activity.link }}">{{ activity.name }}</a></td>
+            <td>{{ activity.distance }}</td>
+            <td>{{ activity.date }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+Cnenct to strava to see activities
+<h1 class="text-center mt-3"><a href="{% url 'social:begin' 'strava' %}">Login with Strava</a></h1>
+{% endif %}
+{% endblock %}
