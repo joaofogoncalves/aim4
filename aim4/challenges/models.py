@@ -6,7 +6,7 @@ from aim4.users.models import User
 class Challenge(BaseModel):
 
     class JoinTypes(models.TextChoices):
-        OPEN = 'OP', 'Opem'
+        OPEN = 'OP', 'Open'
         APPROVAL = 'AP', 'Approval'
         INVITE = 'IN', 'Invite'
         CLOSED = 'CL', 'Closed'

@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='challenge',
             name='join_type',
-            field=models.CharField(choices=[('OP', 'Opem'), ('AP', 'Approval'), ('IN', 'Invite'), ('CL', 'Closed')], default='OP', max_length=2),
+            field=models.CharField(choices=[('OP', 'Open'), ('AP', 'Approval'), ('IN', 'Invite'), ('CL', 'Closed')], default='OP', max_length=2),
         ),
         migrations.AddField(
             model_name='challenge',
