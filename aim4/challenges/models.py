@@ -24,6 +24,7 @@ class Challenge(BaseModel):
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )
 
     members = models.ManyToManyField(User, through='Membership', related_name='challenges')
+    activities = models.ManyToManyField(Activity, through='Contribution', related_name='activities')
 
     distance = models.IntegerField(default=0, null=False, blank=False)
     eta = models.DateField('ETA', null=True, blank=True)
