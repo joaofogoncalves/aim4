@@ -49,9 +49,10 @@ class User(AbstractUser):
     def get_strava_activities(self, strava_social, from_date=None):
         new_activities = []
         provider_name = 'strava'
-        existing_ids = self.activities.filter(provider=provider_name).values_list('original_id', flat=True)
-
-        print(existing_ids)
+        if self.relate_activities:
+            existing_ids = self.activities.filter(provider=provider_name).values_list('original_id', flat=True)
+        else:
+            existing_ids = Activity.objects.filter(provider=provider_name).values_list('original_id', flat=True)
 
         # get access token
         token = strava_social.get_access_token(load_strategy())
@@ -65,7 +66,6 @@ class User(AbstractUser):
         km = scaled_unit('km', 'm', 1000) # define a new unit
 
         for strava_activity in query:
-            print(strava_activity.id)
             strava_id = strava_activity.id
             if not strava_id in existing_ids:
 
