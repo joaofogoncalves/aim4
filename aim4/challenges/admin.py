@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Challenge, Membership
+from .models import Challenge, Membership, Contribution
 
 
 
@@ -11,6 +11,12 @@ class ChallengeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Membership)
-class Membership(admin.ModelAdmin):
+class MembershipAdmin(admin.ModelAdmin):
     list_display = ['member', 'challenge', 'created', 'updated']
+    list_filter = ['challenge']
+
+
+@admin.register(Contribution)
+class ContributionAdmin(admin.ModelAdmin):
+    list_display = ['activity', 'challenge', 'created', 'updated']
     list_filter = ['challenge']

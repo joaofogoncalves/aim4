@@ -1,7 +1,7 @@
 from django.db import models
 from aim4.mixins import BaseModel
 from aim4.users.models import User
-
+from aim4.activities.models import Activity
 
 class Challenge(BaseModel):
 
@@ -34,12 +34,24 @@ class Challenge(BaseModel):
 
 class Membership(BaseModel):
 
-    member = models.ForeignKey(User, related_name='memberships', on_delete=models.CASCADE, null=True)
-    challenge = models.ForeignKey(Challenge, related_name='memberships', on_delete=models.CASCADE, null=True, blank=True)
-    approved = models.BooleanField(default=False)
+    member = models.ForeignKey(User, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
+    challenge = models.ForeignKey(Challenge, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
+    approved = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = 'Memberships'
 
     def __str__(self):
         return f'{self.member} - {self.challenge}'
+
+class Contribution(BaseModel):
+
+    challenge = models.ForeignKey(Challenge, related_name='contributions', on_delete=models.CASCADE, null=False, blank=False)
+    activity = models.ForeignKey(Activity, related_name='contributions', on_delete=models.CASCADE, null=False, blank=False)
+
+
+    class Meta:
+        verbose_name_plural = 'Contributions'
+
+    def __str__(self):
+        return f'{self.activity} - {self.challenge}'
