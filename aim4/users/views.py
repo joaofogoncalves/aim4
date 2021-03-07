@@ -4,6 +4,8 @@ from django.contrib.auth import update_session_auth_hash, login, authenticate
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
+from social_django.utils import load_strategy
+from datetime import datetime
 from social_django.models import UserSocialAuth
 
 import requests
@@ -40,11 +42,12 @@ def home(request):
 
         # get access token
         strava_social = request.user.social_auth.get(provider='strava')
-        token = strava_social.extra_data['access_token']
+        token = strava_social.get_access_token(load_strategy())
 
         # get activity details
         client = Client()
         client.access_token = token
+
 
         if from_date and to_date:
             query = client.get_activities(before=to_datetime, after=from_datetime)
