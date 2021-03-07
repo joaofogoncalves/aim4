@@ -13,6 +13,7 @@ class User(AbstractUser):
     Username and password are required. Other fields are optional.
     """
 
+    relate_activities = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
 

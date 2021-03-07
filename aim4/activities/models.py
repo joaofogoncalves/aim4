@@ -9,7 +9,7 @@ class Activity(BaseModel):
         verbose_name_plural = 'Activities'
         ordering = ['date']
 
-    member = models.ForeignKey(User, related_name='activities', on_delete=models.CASCADE, null=True)
+    member = models.ForeignKey(User, related_name='activities', on_delete=models.SET_NULL, null=True)
     date = models.DateField(null=False, blank=False)
     distance = models.IntegerField(default=0, null=False, blank=False)
     duration = models.DurationField(default=0, null=False, blank=False)
