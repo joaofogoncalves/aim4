@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 
+{% block extra_head %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+    <script>
+        $(document).ready(function(){
+          var date_input=$('input[id="date"]'); //our date input has the name "date"
+          var container=$('.dates form').length>0 ? $('.dates form').parent() : "body";
+          var options={
+            format: 'dd/mm/yyyy',
+            startDate: "1/1/1990",
+            todayHighlight: true,
+            autoclose: true,
+          };
+          date_input.datepicker(options);
+        })
+      </script>
+{% endblock %}
+
+
 {% block content %}
 
 {% if strava_connected %}
+
+<h3>Test your strava connection here</h3>
 
     {% if from_date and to_date %}
     <h3 class="text-center mt-3">Activities between {{ from_date }} and {{ to_date }}.</h3>
@@ -62,4 +83,5 @@
 Cnenct to strava to see activities
 <h1 class="text-center mt-3"><a href="{% url 'social:begin' 'strava' %}">Login with Strava</a></h1>
 {% endif %}
+
 {% endblock %}
