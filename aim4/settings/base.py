@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     #3rd Party
     'social_django',
+    'django_extensions',
 
     # Project apps
     'aim4.users',

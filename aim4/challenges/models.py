@@ -24,7 +24,7 @@ class Challenge(BaseModel):
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )
 
     members = models.ManyToManyField(User, through='Membership', related_name='challenges')
-    activities = models.ManyToManyField(Activity, through='Contribution', related_name='activities')
+    activities = models.ManyToManyField(Activity, through='Contribution', related_name='challenges')
 
     distance = models.IntegerField(default=0, null=False, blank=False)
     eta = models.DateField('ETA', null=True, blank=True)
@@ -32,6 +32,13 @@ class Challenge(BaseModel):
 
     def __str__(self):
         return self.target_name
+
+    def create_activities_for_member(self, member):
+        activities = member.get_activities_from_date(self.start_date)
+
+        for activity in activities:
+            self.activities.add(activity)
+
 
 class Membership(BaseModel):
 
