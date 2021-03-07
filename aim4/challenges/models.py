@@ -16,8 +16,9 @@ class Challenge(BaseModel):
         ordering = ['target_name']
 
     target_name = models.CharField('Target', max_length=250, null=False, blank=False)
-    start_date = models.DateField('Start date', null=False, blank=False)
     target_date = models.DateField('Target date', null=True, blank=True)
+    target_distance = models.IntegerField(default=0, null=False, blank=False)
+    start_date = models.DateField('Start date', null=False, blank=False)
     public = models.BooleanField('Public', default=False)
 
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )

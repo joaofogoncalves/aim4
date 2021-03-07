@@ -20,6 +20,7 @@ from django.contrib.auth import views as auth_views
 
 
 from aim4.users.views import home
+from aim4.challenges.views import challenges
 
 urlpatterns = [
 
@@ -28,6 +29,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
-
+    path('challenges/', challenges, name='challenges',)
 ]
 

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>
+    Your challenges
+</h3>
+<ul>
+    {% for challenge in challenges %}
+        <li>
+            {{ challenge.target_name }}
+        </li>
+    {% endfor %}
+</ul>
+
+<h3>
+    Public challenges
+</h3>
+<ul>
+    {% for challenge in public_challenges %}
+        <li>
+            {{ challenge.target_name }} - Join
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
