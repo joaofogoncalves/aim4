@@ -131,7 +131,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 
 SOCIAL_AUTH_STRAVA_KEY = ''
 SOCIAL_AUTH_STRAVA_SECRET = ''
-SOCIAL_AUTH_STRAVA_SCOPE = []
+SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read_all']
 
 SOCIAL_AUTH_STRAVA_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
