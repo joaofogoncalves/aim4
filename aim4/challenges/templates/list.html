@@ -1,34 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>
-    Your challenges
-</h3>
+<div class="container">
+
+    <h3>
+        Your challenges
+    </h3>
 
     {% for challenge in challenges %}
 
     <div class="card" style="width: 18rem;">
 
         <div class="card-body">
-          <h5 class="card-title"> <a href="/challenges/{{ challenge.id }}" >{{ challenge.target_name }}</a></h5>
-          <p class="card-text"> {{ challenge.description }}</p>
+        <h5 class="card-title"> <a href="/challenges/{{ challenge.id }}" >{{ challenge.target_name }}</a></h5>
+        <p class="card-text"> {{ challenge.description }}</p>
         </div>
-      </div>
+    </div>
     {% endfor %}
 
 
-<h3>
-    Public challenges
-</h3>
+    <h3>
+        Public challenges
+    </h3>
 
     {% for challenge in public_challenges %}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title"> <a href="/challenges/{{ challenge.id }}" >{{ challenge.target_name }}</a></h5>
-          <p class="card-text"> {{ challenge.description }}</p>
-          <a href="/challenges/{{ challenge.id }}/join" class="btn btn-primary">Join</a>
+        <p class="card-text"> {{ challenge.description }}</p>
+        <a href="/challenges/{{ challenge.id }}/join" class="btn btn-primary">Join</a>
         </div>
-      </div>
+    </div>
     {% endfor %}
+</div>
 
 {% endblock %}

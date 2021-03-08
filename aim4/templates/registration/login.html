@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-center mt-3"><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a></h1>
+
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Aim4</h1>
+    <p class="lead">Please connect a strava account and join a challenge</p>
+    <hr class="my-4">
+    <p></p>
+
+    <a class="btn btn-primary btn-lg" href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a>
+  </div>
+
+
 {% endblock %}
