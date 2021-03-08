@@ -75,15 +75,26 @@ class Challenge(BaseModel):
         if force:
             self.save()
 
-    def update(self):
+    def update_fields(self, force=True):
         self.update_distance()
         self.update_eta()
 
         if self.target_date:
             self.update_needed_velocity()
 
-        self.save()
+        if force:
+            self.save()
 
+    def join_member(self, member):
+        if self.join_type == JoinTypes.CLOSED:
+            return
+
+        if self.join_type == JoinTypes.OPEN:
+            self.members.add(member)
+            self.create_activities_for_member(member)
+            self.update()
+
+        #TODO other join methods
 
 
 
@@ -91,7 +102,8 @@ class Membership(BaseModel):
 
     member = models.ForeignKey(User, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
     challenge = models.ForeignKey(Challenge, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
-    approved = models.BooleanField(default=True)
+
+    #TODO fields to save invite and approval logic
 
     class Meta:
         verbose_name_plural = 'Memberships'
