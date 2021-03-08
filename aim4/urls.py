@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
+from django.conf import settings
+from django.conf.urls.static import static
 
 from aim4.users.views import home
 from aim4.challenges.views import challenges, challenge_detail, challenge_join
@@ -32,5 +34,5 @@ urlpatterns = [
     path('challenges/', challenges, name='challenges',),
     url(r'^challenges/(?P<challenge_id>\d+)$', challenge_detail, name='challenge_detail'),
     url(r'^challenges/(?P<challenge_id>\d+)/join$', challenge_join, name='challenge_join'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
