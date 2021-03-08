@@ -169,6 +169,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    ('', path.join(BASE_DIR,'static')), #store site-specific media here.
+)
+
 
 # Import local settings
 # NOTE: Nothing below this point can be overwritten by local settings
