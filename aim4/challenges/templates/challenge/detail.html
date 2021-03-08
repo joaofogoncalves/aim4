@@ -43,7 +43,7 @@
             <th>Date</th>
         </tr>
     </thead>
-{% for activity in challenge.activities %}
+{% for activity in challenge.activities.all %}
     <tr>
         <td>{{ activity.type }}</td>
         <td>{{ activity.name }}</td>
