@@ -44,7 +44,7 @@ class Challenge(BaseModel):
             self.activities.add(activity)
 
     def update_distance(self, force=False):
-        inicial_distance = self.distance
+        inicial_distance = 0
         for activity in self.activities.all():
             inicial_distance += activity.distance
 
@@ -58,21 +58,19 @@ class Challenge(BaseModel):
             self.save()
 
     def update_eta(self, force=False):
-        seconds_gone = (timezone.now()-self.start_date).total_seconds()
-        velocity = self.distance/seconds_gone #in m/s
+        if self.distance > 0:
+            seconds_gone = (timezone.now()-self.start_date).total_seconds()
+            velocity = self.distance/seconds_gone #in m/s
 
-        print(f'seconds_gone {seconds_gone}')
-        print(f'self.velocity {velocity}')
+            missing_distance = (self.target_distance*1000)-self.distance #Bad but needed for now untill target can be set in different units
 
-        missing_distance = (self.target_distance*1000)-self.distance #Bad but needed for now untill target can be set in different units
+            seconds_to_target =  missing_distance/velocity
 
-        print(f'missing_distance {missing_distance}')
-        seconds_to_target =  missing_distance/velocity
-
-        print(f'seconds_to_target {seconds_to_target}')
-
-        self.velocity = velocity
-        self.eta = self.start_date+timedelta(seconds=seconds_to_target)
+            self.velocity = velocity
+            self.eta = self.start_date+timedelta(seconds=seconds_to_target)
+        else:
+            self.velocity = 0
+            self.eta = None
 
         if force:
             self.save()

@@ -6,11 +6,56 @@
     Aiming for {{ challenge.target_name }}
 </h2>
 
-Details:
+<p>
+
+    {{ challenge.description }}
+</p>
 
 
+<dl class="row">
+    <dt class="col-sm-3">Start date</dt>
+    <dd class="col-sm-9">{{challenge.start_date }}</dd>
+    <dt class="col-sm-3">Target Distance</dt>
+    <dd class="col-sm-9">{{challenge.target_distance }} Km</dd>
 
+    <dt class="col-sm-3">Currently</dt>
+    <dd class="col-sm-9">
+        <dl class="row">
+            <dt class="col-sm-4">Travelled distance</dt>
+            <dd class="col-sm-8">{{challenge.distance }} m</dd>
+            <dt class="col-sm-4">Velocity</dt>
+            <dd class="col-sm-8">{{challenge.velocity }} m/s</dd>
+            <dt class="col-sm-4">ETA</dt>
+            <dd class="col-sm-8">{{challenge.eta }}</dd>
+          </dl>
+    </dd>
+
+</dl>
 {% if is_member %}
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Distance</th>
+            <th>Duration</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+{% for activity in challenge.activities %}
+    <tr>
+        <td>{{ activity.type }}</td>
+        <td>{{ activity.name }}</td>
+        <td>{{ activity.distance }}</td>
+        <td>{{ activity.duration }}</td>
+        <td>{{ activity.date }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+
+
 
 {% else %}
 <a href="/challenges/{{ challenge.id }}/join" class="btn btn-primary">Join</a>
