@@ -9,8 +9,8 @@ class Activity(BaseModel):
         ordering = ['date']
 
     member = models.ForeignKey('users.User', related_name='activities', on_delete=models.SET_NULL, null=True)
-    date = models.DateField(null=False, blank=False)
-    distance = models.IntegerField(default=0, null=False, blank=False)
+    date = models.DateTimeField(null=False, blank=False)
+    distance = models.FloatField(default=0, null=False, blank=False)
     duration = models.DurationField(default=0, null=False, blank=False)
     name = models.CharField(max_length=250, null=True, blank=True)
 

@@ -2,7 +2,9 @@ from django.db import models
 from aim4.mixins import BaseModel
 from aim4.users.models import User
 from aim4.activities.models import Activity
+from django.utils import timezone
 
+from datetime import timedelta
 class Challenge(BaseModel):
 
     class JoinTypes(models.TextChoices):
@@ -16,9 +18,9 @@ class Challenge(BaseModel):
         ordering = ['target_name']
 
     target_name = models.CharField('Target', max_length=250, null=False, blank=False)
-    target_date = models.DateField('Target date', null=True, blank=True)
-    target_distance = models.IntegerField(default=0, null=False, blank=False)
-    start_date = models.DateField('Start date', null=False, blank=False)
+    target_date = models.DateTimeField('Target date', null=True, blank=True)
+    target_distance = models.IntegerField('Target distance in Km', default=0, null=False, blank=False)
+    start_date = models.DateTimeField('Start date', null=False, blank=False)
     public = models.BooleanField('Public', default=False)
 
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )
@@ -26,9 +28,9 @@ class Challenge(BaseModel):
     members = models.ManyToManyField(User, through='Membership', related_name='challenges')
     activities = models.ManyToManyField(Activity, through='Contribution', related_name='challenges')
 
-    distance = models.IntegerField(default=0, null=False, blank=False)
-    eta = models.DateField('ETA', null=True, blank=True)
-
+    distance = models.FloatField('Distance in m', default=0, null=False, blank=False)
+    eta = models.DateTimeField('ETA', null=True, blank=True)
+    velocity = models.FloatField('Velocity in m/s', default=0, null=False, blank=False)
 
     def __str__(self):
         return self.target_name
@@ -38,6 +40,51 @@ class Challenge(BaseModel):
 
         for activity in activities:
             self.activities.add(activity)
+
+    def update_distance(self, force=False):
+        inicial_distance = self.distance
+        for activity in self.activities.all():
+            inicial_distance += activity.distance
+
+        self.distance = inicial_distance
+        if force:
+            self.save()
+
+    def update_needed_velocity(self, force=False):
+        #TODO calculate needed speed going forward
+        if force:
+            self.save()
+
+    def update_eta(self, force=False):
+        seconds_gone = (timezone.now()-self.start_date).total_seconds()
+        velocity = self.distance/seconds_gone #in m/s
+
+        print(f'seconds_gone {seconds_gone}')
+        print(f'self.velocity {velocity}')
+
+        missing_distance = (self.target_distance*1000)-self.distance #Bad but needed for now untill target can be set in different units
+
+        print(f'missing_distance {missing_distance}')
+        seconds_to_target =  missing_distance/velocity
+
+        print(f'seconds_to_target {seconds_to_target}')
+
+        self.velocity = velocity
+        self.eta = self.start_date+timedelta(seconds=seconds_to_target)
+
+        if force:
+            self.save()
+
+    def update(self):
+        self.update_distance()
+        self.update_eta()
+
+        if self.target_date:
+            self.update_needed_velocity()
+
+        self.save()
+
+
 
 
 class Membership(BaseModel):

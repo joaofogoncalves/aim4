@@ -12,8 +12,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from datetime import datetime
 
-from units import scaled_unit
-
 from aim4.activities.models import Activity
 
 
@@ -63,8 +61,6 @@ class User(AbstractUser):
 
         query = client.get_activities(after=from_date)
 
-        km = scaled_unit('km', 'm', 1000) # define a new unit
-
         for strava_activity in query:
             strava_id = strava_activity.id
             if not strava_id in existing_ids:
@@ -74,7 +70,7 @@ class User(AbstractUser):
                 new_activity.original_id = strava_id
                 new_activity.provider = provider_name
                 new_activity.date = strava_activity.start_date_local
-                new_activity.distance = km(strava_activity.distance)
+                new_activity.distance = strava_activity.distance
                 new_activity.duration = strava_activity.elapsed_time
                 new_activity.name = strava_activity.name
 
