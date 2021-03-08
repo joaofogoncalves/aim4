@@ -73,6 +73,7 @@ class User(AbstractUser):
                 new_activity.distance = strava_activity.distance
                 new_activity.duration = strava_activity.elapsed_time
                 new_activity.name = strava_activity.name
+                new_activity.type = strava_activity.type
 
 
                 if self.relate_activities:
