@@ -22,6 +22,8 @@ class Challenge(BaseModel):
     target_distance = models.IntegerField('Target distance in Km', default=0, null=False, blank=False)
     start_date = models.DateTimeField('Start date', null=False, blank=False)
     public = models.BooleanField('Public', default=False)
+    description = models.TextField('Description', null=True, blank=True)
+
 
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )
 
@@ -86,13 +88,13 @@ class Challenge(BaseModel):
             self.save()
 
     def join_member(self, member):
-        if self.join_type == JoinTypes.CLOSED:
+        if self.join_type == self.JoinTypes.CLOSED:
             return
 
-        if self.join_type == JoinTypes.OPEN:
+        if self.join_type == self.JoinTypes.OPEN:
             self.members.add(member)
             self.create_activities_for_member(member)
-            self.update()
+            self.update_fields()
 
         #TODO other join methods
 

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>
+    Aiming for {{ challenge.target_name }}
+</h2>
+
+Details:
+
+
+
+{% if is_member %}
+
+{% else %}
+<a href="/challenges/{{ challenge.id }}/join" class="btn btn-primary">Join</a>
+
+{% endif %}
+
+{% endblock %}
