@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     #3rd Party
     'social_django',
     'django_extensions',
+    'webmaster_verification',
 
     # Project apps
     'aim4.users',
@@ -169,6 +170,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+WEBMASTER_VERIFICATION = {
+    'bing': '<bing verification code>',
+    'google': '<google verification code>',
+    'majestic': '<majestic verification code>',
+    'yandex': '<yandex verification code>',
+    'alexa': '<alexa verification code>',
+}
 
 
 # Import local settings

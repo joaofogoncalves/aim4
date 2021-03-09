@@ -39,5 +39,7 @@ urlpatterns = [
     path('privacy_policy/', TemplateView.as_view(template_name='corp/privacy_policy.html')),
     path('terms_of_service/', TemplateView.as_view(template_name='corp/terms_of_service.html')),
 
+    url(r'', include('webmaster_verification.urls')),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
