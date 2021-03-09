@@ -17,7 +17,7 @@ class Activity(BaseModel):
 
     #to detect and prevent duplicates
     provider = models.CharField(max_length=250, default='')
-    original_id = models.IntegerField(unique=True)
+    original_id = models.BigIntegerField(unique=True)
 
     def __str__(self):
         return f'{self.name} - {self.date}'
