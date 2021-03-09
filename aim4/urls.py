@@ -36,8 +36,8 @@ urlpatterns = [
     url(r'^challenges/(?P<challenge_id>\d+)$', challenge_detail, name='challenge_detail'),
     url(r'^challenges/(?P<challenge_id>\d+)/join$', challenge_join, name='challenge_join'),
 
-    path('privacy_policy/', TemplateView.as_view(template_name='corp\privacy_policy.html')),
-    path('terms_of_service/', TemplateView.as_view(template_name='corp\terms_of_service.html')),
+    path('privacy_policy/', TemplateView.as_view(template_name='corp/privacy_policy.html')),
+    path('terms_of_service/', TemplateView.as_view(template_name='corp/terms_of_service.html')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
