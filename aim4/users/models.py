@@ -61,29 +61,35 @@ class User(AbstractUser):
 
         query = client.get_activities(after=from_date)
 
-        for strava_activity in query:
-            strava_id = strava_activity.id
-            if not strava_id in existing_ids:
+        try:
+            for strava_activity in query:
+                strava_id = strava_activity.id
+                if not strava_id in existing_ids:
 
-                new_activity = Activity()
+                    new_activity = Activity()
+                    new_activity.original_id = strava_id
+                    new_activity.provider = provider_name
 
-                new_activity.original_id = strava_id
-                new_activity.provider = provider_name
+                else:
+                    new_activity = self.activities.get(original_id=strava_id)
+
                 new_activity.date = strava_activity.start_date_local
                 new_activity.distance = strava_activity.distance
                 new_activity.duration = strava_activity.elapsed_time
                 new_activity.name = strava_activity.name
                 new_activity.type = strava_activity.type
 
-
                 if self.relate_activities:
                     new_activity.member = self
+                else:
+                    new_activity.member = none
 
                 new_activity.save()
-            else:
-                new_activity = self.activities.get(original_id=strava_id)
 
-            new_activities.append(new_activity)
+                new_activities.append(new_activity)
+        except:
+            print('User f{self} ha no permissions on strava')
+            strava_social.delete()
 
         return new_activities
 
