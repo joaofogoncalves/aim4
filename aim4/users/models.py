@@ -82,7 +82,7 @@ class User(AbstractUser):
                 if self.relate_activities:
                     new_activity.member = self
                 else:
-                    new_activity.member = none
+                    new_activity.member = None
 
                 new_activity.save()
 
@@ -93,11 +93,20 @@ class User(AbstractUser):
 
         return new_activities
 
+    def save(self):
+        if not self.relate_activities:
+            self.activities.update(member=None)
+        else:
+            ## TODO: try to reconnect activities by refetching from providers.
+            pass
+
+        super().save()
+
 
     def has_read_permission(self, user):
         return user.is_staff or self.id == user.id
 
     def has_write_permission(self, user):
         """IMPORTANT: Only staff users can edit data from users."""
-        return user.is_staff
+        return user.is_staff or self.id == user.id
 

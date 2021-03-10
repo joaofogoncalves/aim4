@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from aim4.users.views import home
+from aim4.users.views import home, profile
 from aim4.challenges.views import challenges, challenge_detail, challenge_join
 
 urlpatterns = [
@@ -35,6 +35,8 @@ urlpatterns = [
     path('challenges/', challenges, name='challenges',),
     url(r'^challenges/(?P<challenge_id>\d+)$', challenge_detail, name='challenge_detail'),
     url(r'^challenges/(?P<challenge_id>\d+)/join$', challenge_join, name='challenge_join'),
+
+    path('profile', profile, name='profile'),
 
     path('privacy_policy/', TemplateView.as_view(template_name='corp/privacy_policy.html')),
     path('terms_of_service/', TemplateView.as_view(template_name='corp/terms_of_service.html')),

@@ -92,3 +92,14 @@ def home(request):
                                 'to_date': to_date,
                                 'strava_connected': strava_connected,
                             })
+
+
+@login_required
+def profile(request):
+    context = {}
+    if request.GET:
+
+    elif request.POST:
+
+
+    return render(request, 'profile.html',context=context)
