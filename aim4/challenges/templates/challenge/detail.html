@@ -7,10 +7,12 @@
 </h2>
 
 <p>
-
     {{ challenge.description }}
 </p>
 
+{% if is_owner %}
+<a href="/challenges/{{ challenge.id }}/refresh" class="btn btn-primary">Refresh</a>
+{% endif %}
 
 <dl class="row">
     <dt class="col-sm-3">Start date</dt>
@@ -53,8 +55,6 @@
     </tr>
 {% endfor %}
 </table>
-
-
 
 
 {% else %}

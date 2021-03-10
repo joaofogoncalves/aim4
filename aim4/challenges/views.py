@@ -32,10 +32,15 @@ def challenge_detail(request, challenge_id):
             else:
                 is_member = False
 
+        if challenge.owner and challenge.owner.id == request.user.id:
+            is_owner = True
+        else:
+            is_owner = False
+
     except Challenge.DoesNotExist:
         # If no Post has id post_id, we raise an HTTP 404 error.
         raise Http404
-    return render(request, 'challenge/detail.html', {'challenge': challenge, 'is_member': is_member})
+    return render(request, 'challenge/detail.html', {'challenge': challenge, 'is_member': is_member, 'is_owner': is_owner})
 
 @login_required
 def challenge_join(request, challenge_id):
@@ -43,6 +48,20 @@ def challenge_join(request, challenge_id):
         challenge = Challenge.objects.get(pk=challenge_id)
 
         challenge.join_member(request.user)
+
+    except Challenge.DoesNotExist:
+        # If no Post has id post_id, we raise an HTTP 404 error.
+        raise Http404
+
+    return redirect(to=f'/challenges/{challenge.id}')
+
+@login_required
+def challenge_refresh(request, challenge_id):
+    try:
+        challenge = Challenge.objects.get(pk=challenge_id)
+
+        if challenge.owner and challenge.owner.id == request.user.id:
+            challenge.refresh()
 
     except Challenge.DoesNotExist:
         # If no Post has id post_id, we raise an HTTP 404 error.
