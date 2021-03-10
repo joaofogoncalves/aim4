@@ -93,14 +93,14 @@ class User(AbstractUser):
 
         return new_activities
 
-    def save(self):
+    def save(self, *args, **kwargs):
         if not self.relate_activities:
             self.activities.update(member=None)
         else:
             ## TODO: try to reconnect activities by refetching from providers.
             pass
 
-        super().save()
+        super().save(*args, **kwargs)
 
 
     def has_read_permission(self, user):

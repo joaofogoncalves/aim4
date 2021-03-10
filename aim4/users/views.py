@@ -98,8 +98,8 @@ def home(request):
 def profile(request):
     context = {}
     if request.GET:
-
+        pass
     elif request.POST:
-
+        pass
 
     return render(request, 'profile.html',context=context)

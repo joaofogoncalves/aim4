@@ -3,6 +3,7 @@ from aim4.mixins import BaseModel
 from aim4.users.models import User
 from aim4.activities.models import Activity
 from django.utils import timezone
+from django.conf import settings
 
 from datetime import timedelta
 class Challenge(BaseModel):
@@ -24,6 +25,7 @@ class Challenge(BaseModel):
     public = models.BooleanField('Public', default=False)
     description = models.TextField('Description', null=True, blank=True)
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='challenges_owner', null=True, blank=True, on_delete=models.SET_NULL,)
 
     join_type = models.CharField(max_length=2, choices=JoinTypes.choices,default=JoinTypes.OPEN )
 
@@ -101,6 +103,10 @@ class Challenge(BaseModel):
             self.create_activities_for_member(member, refresh=True)
 
         self.update_calculated_fields()
+
+    def save(self, *args, **kwargs):
+
+        super().save(*args, **kwargs)
 
 
 class Membership(BaseModel):
