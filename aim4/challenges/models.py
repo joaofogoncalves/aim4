@@ -37,8 +37,8 @@ class Challenge(BaseModel):
     def __str__(self):
         return self.target_name
 
-    def create_activities_for_member(self, member):
-        activities = member.get_activities_from_date(self.start_date)
+    def create_activities_for_member(self, member, refresh=False):
+        activities = member.get_activities_from_date(from_date=self.start_date, refresh=refresh)
 
         for activity in activities:
             self.activities.add(activity)
@@ -75,7 +75,7 @@ class Challenge(BaseModel):
         if force:
             self.save()
 
-    def update_fields(self, force=True):
+    def update_calculated_fields(self, force=True):
         self.update_distance()
         self.update_eta()
 
@@ -92,10 +92,15 @@ class Challenge(BaseModel):
         if self.join_type == self.JoinTypes.OPEN:
             self.members.add(member)
             self.create_activities_for_member(member)
-            self.update_fields()
+            self.update_calculated_fields()
 
         #TODO other join methods
 
+    def refresh(self):
+        for member in self.members.all():
+            self.create_activities_for_member(member, refresh=True)
+
+        self.update_calculated_fields()
 
 
 class Membership(BaseModel):

@@ -29,7 +29,7 @@ class User(AbstractUser):
     relate_activities = models.BooleanField(default=True)
 
     def get_activities_from_date(self, from_date=None, refresh = True):
-        if not refresh or not self.relate_activities:
+        if not refresh and self.relate_activities:
             return self.activities.filter(date__gte=from_date)
 
         social_activities = []

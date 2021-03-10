@@ -7,7 +7,7 @@ from .models import Challenge, Membership, Contribution
 @admin.register(Challenge)
 class ChallengeAdmin(admin.ModelAdmin):
     list_display = ['target_name', 'start_date', 'distance', 'created', 'updated']
-    readonly_fields = ['distance', 'eta']
+    readonly_fields = ['distance', 'eta', 'velocity']
 
 
 @admin.register(Membership)
