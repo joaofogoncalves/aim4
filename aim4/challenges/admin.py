@@ -13,10 +13,11 @@ class ChallengeAdmin(admin.ModelAdmin):
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ['member', 'challenge', 'created', 'updated']
-    list_filter = ['challenge']
-
+    list_filter = ['challenge', ]
+    search_fields = ['member']
 
 @admin.register(Contribution)
 class ContributionAdmin(admin.ModelAdmin):
-    list_display = ['activity', 'challenge', 'created', 'updated']
+    list_display = ['activity', 'challenge', 'notified', 'created', 'updated']
     list_filter = ['challenge']
+    search_fields = ['activity']

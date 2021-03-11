@@ -121,6 +121,7 @@ class Membership(BaseModel):
     challenge = models.ForeignKey(Challenge, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
 
     #TODO fields to save invite and approval logic
+    # TODO fields to have member/admin logic
 
     class Meta:
         verbose_name_plural = 'Memberships'
