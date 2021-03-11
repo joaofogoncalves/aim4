@@ -22,6 +22,7 @@ def challenge_detail(request, challenge_id):
     try:
         challenge = Challenge.objects.get(pk=challenge_id)
         user_challenges_ids = request.user.challenges.all().values_list('id', flat=True)
+        print(challenge.owner, challenge.owner.id, request.user.id)
 
         if not challenge.public:
             if challenge.id not in user_challenges_ids:

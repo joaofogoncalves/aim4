@@ -4,6 +4,8 @@ from aim4.users.models import User
 from aim4.activities.models import Activity
 from django.utils import timezone
 from django.conf import settings
+import requests
+import json
 
 from datetime import timedelta
 class Challenge(BaseModel):
@@ -113,6 +115,7 @@ class Challenge(BaseModel):
         super().save(*args, **kwargs)
 
 
+
 class Membership(BaseModel):
 
     member = models.ForeignKey(User, related_name='memberships', on_delete=models.CASCADE, null=False, blank=False)
@@ -126,14 +129,81 @@ class Membership(BaseModel):
     def __str__(self):
         return f'{self.member} - {self.challenge}'
 
+    def save(self, *args, **kwargs):
+
+        super().save(*args, **kwargs)
+
 class Contribution(BaseModel):
 
     challenge = models.ForeignKey(Challenge, related_name='contributions', on_delete=models.CASCADE, null=False, blank=False)
     activity = models.ForeignKey(Activity, related_name='contributions', on_delete=models.CASCADE, null=False, blank=False)
-
+    notified = models.BooleanField('Notification Sent', default=False)
 
     class Meta:
         verbose_name_plural = 'Contributions'
 
     def __str__(self):
         return f'{self.activity} - {self.challenge}'
+
+
+
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+@receiver(post_save, sender=Contribution, dispatch_uid='notify_slack')
+def notify_slack(sender, instance, created, raw, **kwarg):
+    """"""
+    if not instance.notified:
+        print('a')
+        challenge = instance.challenge
+        activity = instance.activity
+        slack_endpoint_url = challenge.slack_endpoint_url
+        if challenge and activity and challenge.slack_endpoint_url:
+
+
+            print(challenge.slack_channel)
+            message_dict = {
+                "channel": challenge.slack_channel,
+                "attachments": [
+                    {
+                        "color": "#36a64f",
+                        "author_name": activity.member.get_full_name() if activity.member else '',
+                        "title": activity.name,
+                        "text": f"on {aim4_date_format(activity.date)}",
+                        "fields": [
+                            { "title": "Type",  "value": activity.type, "short": True },
+                            { "title": "Distance",  "value": activity.distance, "short": True },
+                            { "title": "Duration",  "value": aim4_duration_format(activity.duration), "short": True }
+                        ],
+                        "footer": "<https://aim4.live|aim4.live>"
+                    }
+                ]
+
+            }
+            print('a')
+            reponse = requests.post(url=challenge.slack_endpoint_url, data=json.dumps(message_dict))
+            print(reponse)
+            instance.notified = True
+            instance.save()
+
+
+def aim4_date_format(date):
+    return date.strftime('%A, %B %d, %Y at %H:%M')
+
+def aim4_duration_format(td):
+
+    total_seconds = int(td.total_seconds())
+
+    days = total_seconds // 86400
+    remaining_hours = total_seconds % 86400
+    remaining_minutes = remaining_hours % 3600
+    hours = remaining_hours // 3600
+    minutes = remaining_minutes // 60
+    seconds = remaining_minutes % 60
+
+    days_str = f'{days}d ' if days else ''
+    hours_str = f'{hours}h ' if hours else ''
+    minutes_str = f'{minutes}m ' if minutes else ''
+    seconds_str = f'{seconds}s' if seconds and not hours_str else ''
+
+    return f'{days_str}{hours_str}{minutes_str}{seconds_str}'
