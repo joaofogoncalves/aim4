@@ -48,8 +48,7 @@ class Challenge(BaseModel):
     def create_activities_for_member(self, member, refresh=False):
         activities = member.get_activities_from_date(from_date=self.start_date, refresh=refresh)
 
-        for activity in activities:
-            self.activities.add(activity)
+        self.activities.add(*activities)
 
     def update_distance(self, force=False):
         inicial_distance = 0
@@ -146,45 +145,42 @@ class Contribution(BaseModel):
         return f'{self.activity} - {self.challenge}'
 
 
-
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import m2m_changed, post_save
 
-@receiver(post_save, sender=Contribution, dispatch_uid='notify_slack')
-def notify_slack(sender, instance, created, raw, **kwarg):
+
+@receiver(post_save, sender=Contribution)
+def authorship_changed(sender, instance, **kwargs):
+    print("authors changed")
+
+@receiver(m2m_changed, sender=Challenge.activities.through, dispatch_uid='notify_slack')
+def notify_slack(sender, instance, action, reverse, model, pk_set, **kwarg):
     """"""
-    if not instance.notified:
-        print('a')
-        challenge = instance.challenge
-        activity = instance.activity
-        slack_endpoint_url = challenge.slack_endpoint_url
-        if challenge and activity and challenge.slack_endpoint_url:
+    if action in ["post_add"] :
+        activities = Activity.objects.filter(id__in = pk_set)
+        for activity in activities:
+            challenge = instance
 
+            if challenge and activity and challenge.slack_endpoint_url:
+                message_dict = {
+                    "channel": challenge.slack_channel,
+                    "attachments": [
+                        {
+                            "color": "#36a64f",
+                            "author_name": activity.member.get_full_name() if activity.member else '',
+                            "title": activity.name,
+                            "text": f"on {aim4_date_format(activity.date)}",
+                            "fields": [
+                                { "title": "Type",  "value": activity.type, "short": True },
+                                { "title": "Distance",  "value": activity.distance, "short": True },
+                                { "title": "Duration",  "value": aim4_duration_format(activity.duration), "short": True }
+                            ],
+                            "footer": "<https://aim4.live|aim4.live>"
+                        }
+                    ]
 
-            print(challenge.slack_channel)
-            message_dict = {
-                "channel": challenge.slack_channel,
-                "attachments": [
-                    {
-                        "color": "#36a64f",
-                        "author_name": activity.member.get_full_name() if activity.member else '',
-                        "title": activity.name,
-                        "text": f"on {aim4_date_format(activity.date)}",
-                        "fields": [
-                            { "title": "Type",  "value": activity.type, "short": True },
-                            { "title": "Distance",  "value": activity.distance, "short": True },
-                            { "title": "Duration",  "value": aim4_duration_format(activity.duration), "short": True }
-                        ],
-                        "footer": "<https://aim4.live|aim4.live>"
-                    }
-                ]
-
-            }
-            print('a')
-            reponse = requests.post(url=challenge.slack_endpoint_url, data=json.dumps(message_dict))
-            print(reponse)
-            instance.notified = True
-            instance.save()
+                }
+                reponse = requests.post(url=challenge.slack_endpoint_url, data=json.dumps(message_dict))
 
 
 def aim4_date_format(date):
