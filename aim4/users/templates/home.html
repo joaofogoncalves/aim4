@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 
 {% block extra_head %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
     <script>
         $(document).ready(function(){
-          var date_input=$('input[id="date"]'); //our date input has the name "date"
-          var container=$('.dates form').length>0 ? $('.dates form').parent() : "body";
-          var options={
-            format: 'dd/mm/yyyy',
-            startDate: "1/1/1990",
-            todayHighlight: true,
-            autoclose: true,
-          };
-          date_input.datepicker(options);
+            var date_input=$('input[id="date"]'); //our date input has the name "date"
+            var container=$('.dates form').length>0 ? $('.dates form').parent() : "body";
+            var options={
+                format: 'dd/mm/yyyy',
+                startDate: "1/1/1990",
+                todayHighlight: true,
+                autoclose: true,
+            };
+            date_input.datepicker(options);
         })
-      </script>
+    </script>
 {% endblock %}
 
 
