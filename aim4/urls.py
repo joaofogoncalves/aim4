@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from aim4.users.views import home, profile
+from aim4.users.views import home, profile, settings
 from aim4.challenges.views import challenges, challenge_detail, challenge_join, challenge_refresh
 
 urlpatterns = [
@@ -32,14 +32,9 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('oauth/', include('social_django.urls', namespace='social')),
     path('admin/', admin.site.urls),
-    path('challenges/', challenges, name='challenges',),
 
-    url(r'^challenges/(?P<challenge_id>\d+)$', challenge_detail, name='challenge_detail'),
-    url(r'^challenges/(?P<challenge_id>\d+)/join$', challenge_join, name='challenge_join'),
-    url(r'^challenges/(?P<challenge_id>\d+)/refresh$', challenge_refresh, name='challenge_refresh'),
-
-
-    path('profile', profile, name='profile'),
+    path('challenges/', include('aim4.challenges.urls')),
+    path('user/', include('aim4.users.urls')),
 
     path('privacy_policy/', TemplateView.as_view(template_name='corp/privacy_policy.html')),
     path('terms_of_service/', TemplateView.as_view(template_name='corp/terms_of_service.html')),

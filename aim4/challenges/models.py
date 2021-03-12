@@ -173,7 +173,7 @@ def notify_slack(sender, instance, action, reverse, model, pk_set, **kwarg):
                             "text": f"on {aim4_date_format(activity.date)}",
                             "fields": [
                                 { "title": "Type",  "value": activity.type, "short": True },
-                                { "title": "Distance",  "value": activity.distance, "short": True },
+                                { "title": "Distance",  "value": f"{activity.distance}m", "short": True },
                                 { "title": "Duration",  "value": aim4_duration_format(activity.duration), "short": True }
                             ],
                             "footer": "<https://aim4.live|aim4.live>"

@@ -35,26 +35,60 @@
 </dl>
 {% if is_member %}
 
-<table class="table">
-    <thead class="thead-light">
-        <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Distance</th>
-            <th>Duration</th>
-            <th>Date</th>
-        </tr>
-    </thead>
-{% for activity in challenge.activities.all %}
-    <tr>
-        <td>{{ activity.type }}</td>
-        <td>{{ activity.name }}</td>
-        <td>{{ activity.distance }}</td>
-        <td>{{ activity.duration }}</td>
-        <td>{{ activity.date }}</td>
-    </tr>
-{% endfor %}
-</table>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="activities-tab" data-bs-toggle="tab" data-bs-target="#activities" type="button" role="tab" aria-controls="activities" aria-selected="true">Activities</button>
+    </li>
+    <li class="nav-item" role="members">
+      <button class="nav-link" id="members-tab" data-bs-toggle="tab" data-bs-target="#members" type="button" role="tab" aria-controls="members" aria-selected="false">Members</button>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="activities" role="tabpanel" aria-labelledby="home-tab">
+
+        <table class="table table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>User</th>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Distance</th>
+                    <th>Duration</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+        {% for activity in challenge.activities.all %}
+            <tr>
+                <td>{{ activity.member.get_full_name }}</td>
+                <td>{{ activity.type }}</td>
+                <td>{{ activity.name }}</td>
+                <td>{{ activity.distance }}m</td>
+                <td>{{ activity.duration }}</td>
+                <td>{{ activity.date }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+    </div>
+    <div class="tab-pane fade" id="members" role="tabpanel" aria-labelledby="members-tab">
+
+        <table class="table table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Joined in</th>
+                </tr>
+            </thead>
+        {% for membership in challenge.memberships.all %}
+            <tr>
+                <td>{{ membership.member.get_full_name }}</td>
+                <td>{{ membership.created }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+
+    </div>
+  </div>
 
 
 {% else %}

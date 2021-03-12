@@ -103,3 +103,13 @@ def profile(request):
         pass
 
     return render(request, 'profile.html',context=context)
+
+@login_required
+def settings(request):
+    context = {}
+    if request.GET:
+        pass
+    elif request.POST:
+        pass
+
+    return render(request, 'settings.html',context=context)
