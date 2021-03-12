@@ -46,5 +46,5 @@ urlpatterns = [
 
     url(r'', include('webmaster_verification.urls')),
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
 

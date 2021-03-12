@@ -132,7 +132,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 
 SOCIAL_AUTH_STRAVA_KEY = ''
 SOCIAL_AUTH_STRAVA_SECRET = ''
-SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read_all']
+SOCIAL_AUTH_STRAVA_SCOPE = ['activity:read', 'activity:read_all']
 
 SOCIAL_AUTH_STRAVA_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -165,11 +165,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 
 WEBMASTER_VERIFICATION = {
     'bing': '<bing verification code>',
