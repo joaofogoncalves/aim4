@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
   <title> Aim4</title>
 
@@ -16,17 +16,30 @@
   {% endblock %}
 
 </head>
-<body>
-  {% if user.is_authenticated %}
-    {% include "menu.html" %}
-  {% endif %}
-  <main class="container">
-    <div class="class="bg-light p-5 rounded">
+<body class='d-flex flex-column h-100'>
+  <header>
+    <!-- Fixed navbar -->
+    {% if user.is_authenticated %}
+      {% include "menu.html" %}
+    {% endif %}
+  </header>
+  <main class="flex-shrink-0">
+    <div class="container">
       {% block content %}
       {% endblock %}
     </div>
   </main>
 
+  <footer class="footer mt-auto py-3 bg-light">
+      <ul class="nav justify-content-center">
+        <li class="nav-item">
+          <a class="dropdown-item" href="{% url 'privacy_policy' %}">Privacy Policy</a>
+        </li>
+        <li class="nav-item">
+          <a class="dropdown-item" href="{% url 'terms_of_service' %}">Terms of Service</a>
+        </li>
+      </ul>
+  </footer>
 
 </body>
 </html>
