@@ -17,10 +17,6 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from django.views.generic import TemplateView
-
-from django.conf import settings
-from django.conf.urls.static import static
 
 from aim4.users.views import home
 
@@ -35,8 +31,7 @@ urlpatterns = [
     path('challenges/', include('aim4.challenges.urls')),
     path('user/', include('aim4.users.urls')),
 
-    path('privacy_policy/', TemplateView.as_view(template_name='corp/privacy_policy.html'), name='privacy_policy'),
-    path('terms_of_service/', TemplateView.as_view(template_name='corp/terms_of_service.html'), name='terms_of_service'),
+    path('core/', include('aim4.core.urls')),
 
     url(r'', include('webmaster_verification.urls')),
 
