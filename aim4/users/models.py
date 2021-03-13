@@ -28,15 +28,17 @@ class User(AbstractUser):
 
     relate_activities = models.BooleanField(default=True)
 
+    def get_sports_socials(self):
+        sport_providers = ['strava'] #Maybe later define somewhere else
+        return self.social_auth.filter(provider__in=sport_providers)
+
     def get_activities_from_date(self, from_date=None, refresh = True):
         if not refresh and self.relate_activities:
             return self.activities.filter(date__gte=from_date)
 
         social_activities = []
-        # FOR EACH SOCIAL ACCOUNT
-        sport_providers = ['strava'] #Maybe later define somewhere else
 
-        for social in self.social_auth.all():
+        for social in self.get_sports_socials():
             get_social_activities = getattr(self, f'get_{social.provider}_activities', None)
             if callable(get_social_activities):
                 social_activities += get_social_activities(social, from_date)

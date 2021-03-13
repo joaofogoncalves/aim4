@@ -107,6 +107,9 @@ def profile(request):
 @login_required
 def settings(request):
     context = {}
+
+    context['socials'] = request.user.get_sports_socials()
+
     if request.GET:
         pass
     elif request.POST:

@@ -4,7 +4,12 @@
 
 <h3>Personal Settings</h3>
 
+
 <h3>Connected accounts</h3>
 
-
+    <ul>
+        {% for social in socials%}
+            {{ social.provider }} {{ }}
+        {% endfor %}
+    </ul>
 {% endblock %}
