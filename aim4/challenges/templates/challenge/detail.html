@@ -5,7 +5,8 @@
 
 {% block extra_head %}
 
-<script type="text/javascript" src="https://www.jsdelivr.com/package/npm/chart.js?path=dist"></script>
+<script src="https://www.jsdelivr.com/package/npm/chart.js?path=dist" crossorigin="anonymous"></script>
+
 <script type="text/javascript">
     $.get('{% url "line_chart_json" %}', function(data) {
         var ctx = $("#distanceChart").get(0).getContext("2d");
