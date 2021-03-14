@@ -73,7 +73,7 @@ class Challenge(BaseModel):
 
             seconds_to_target =  missing_distance/velocity
 
-            self.velocity = velocity
+            self.velocity = round(velocity, 5)
             self.eta = self.start_date+timedelta(seconds=seconds_to_target)
         else:
             self.velocity = 0
