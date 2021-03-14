@@ -2,13 +2,21 @@
 {% load static %}
 {% load render_table from django_tables2 %}
 
-<link href="{% static 'tables.css' %}"  rel="stylesheet" />
-<head>
-    <title>django-chartjs line chart demo</title>
-    <!--[if lte IE 8]>
-        <script src="{% static 'js/excanvas.js' %}"></script>
-    <![endif]-->
-</head>
+
+{% block extra_head %}
+
+<script type="text/javascript" src="https://www.jsdelivr.com/package/npm/chart.js?path=dist"></script>
+<script type="text/javascript">
+    $.get('{% url "line_chart_json" %}', function(data) {
+        var ctx = $("#distanceChart").get(0).getContext("2d");
+        new Chart(ctx, {
+            type: 'line', data: data
+        });
+    });
+</script>
+
+
+{% endblock %}
 
 {% block content %}
 <div class="details">
@@ -51,16 +59,7 @@
 <div class="graph">
 
     <canvas id="distanceChart" width="500" height="100"></canvas>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-    <script type="text/javascript">
-        $.get('{% url "line_chart_json" %}', function(data) {
-            var ctx = $("#distanceChart").get(0).getContext("2d");
-            new Chart(ctx, {
-                type: 'line', data: data
-            });
-        });
-    </script>
+
 </div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
