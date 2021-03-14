@@ -9,7 +9,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $.get('{% url "line_chart_json" %}', function(data) {
+        jQuery.get('{% url "line_chart_json" %}', function(data) {
             var ctx = $("#distanceChart").get(0).getContext("2d");
             new Chart(ctx, {
                 type: 'line', data: data
