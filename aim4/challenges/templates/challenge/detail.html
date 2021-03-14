@@ -1,40 +1,67 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load render_table from django_tables2 %}
+
+<link href="{% static 'tables.css' %}"  rel="stylesheet" />
+<head>
+    <title>django-chartjs line chart demo</title>
+    <!--[if lte IE 8]>
+        <script src="{% static 'js/excanvas.js' %}"></script>
+    <![endif]-->
+</head>
 
 {% block content %}
+<div class="details">
+    <div class="title" fxFlex>
+        <h2>
+            Aiming for {{ challenge.target_name }}
+        </h2>
 
-<h2>
-    Aiming for {{ challenge.target_name }}
-</h2>
+        <p>
+            {{ challenge.description }}
+        </p>
 
-<p>
-    {{ challenge.description }}
-</p>
+        {% if is_owner %}
+        <a href="/challenges/{{ challenge.id }}/refresh" class="btn btn-primary">Refresh</a>
+        {% endif %}
+    </div>
+    <dl class="row">
+        <dt class="col-sm-3">Start date</dt>
+        <dd class="col-sm-9">{{challenge.start_date }}</dd>
+        <dt class="col-sm-3">Target Distance</dt>
+        <dd class="col-sm-9">{{challenge.target_distance }} Km</dd>
 
-{% if is_owner %}
-<a href="/challenges/{{ challenge.id }}/refresh" class="btn btn-primary">Refresh</a>
-{% endif %}
+        <dt class="col-sm-3">Currently</dt>
+        <dd class="col-sm-9">
+            <dl class="row">
+                <dt class="col-sm-4">Travelled distance</dt>
+                <dd class="col-sm-8">{{challenge.distance }} m</dd>
+                <dt class="col-sm-4">Velocity</dt>
+                <dd class="col-sm-8">{{challenge.velocity }} m/s</dd>
+                <dt class="col-sm-4">ETA</dt>
+                <dd class="col-sm-8">{{challenge.eta }}</dd>
+            </dl>
+        </dd>
 
-<dl class="row">
-    <dt class="col-sm-3">Start date</dt>
-    <dd class="col-sm-9">{{challenge.start_date }}</dd>
-    <dt class="col-sm-3">Target Distance</dt>
-    <dd class="col-sm-9">{{challenge.target_distance }} Km</dd>
+    </dl>
+</div>
 
-    <dt class="col-sm-3">Currently</dt>
-    <dd class="col-sm-9">
-        <dl class="row">
-            <dt class="col-sm-4">Travelled distance</dt>
-            <dd class="col-sm-8">{{challenge.distance }} m</dd>
-            <dt class="col-sm-4">Velocity</dt>
-            <dd class="col-sm-8">{{challenge.velocity }} m/s</dd>
-            <dt class="col-sm-4">ETA</dt>
-            <dd class="col-sm-8">{{challenge.eta }}</dd>
-          </dl>
-    </dd>
-
-</dl>
 {% if is_member %}
 
+<div class="graph">
+
+    <canvas id="distanceChart" width="500" height="100"></canvas>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script type="text/javascript">
+        $.get('{% url "line_chart_json" %}', function(data) {
+            var ctx = $("#distanceChart").get(0).getContext("2d");
+            new Chart(ctx, {
+                type: 'line', data: data
+            });
+        });
+    </script>
+</div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="activities-tab" data-bs-toggle="tab" data-bs-target="#activities" type="button" role="tab" aria-controls="activities" aria-selected="true">Activities</button>
@@ -45,30 +72,7 @@
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="activities" role="tabpanel" aria-labelledby="home-tab">
-
-        <table class="table table-sm">
-            <thead class="thead-light">
-                <tr>
-                    <th>User</th>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Distance</th>
-                    <th>Duration</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-        {% for activity in challenge.activities.all %}
-            <tr>
-                <td>{{ activity.member.get_full_name }}</td>
-                <td>{{ activity.type }}</td>
-                <td>{{ activity.name }}</td>
-                <td>{{ activity.distance }}m</td>
-                <td>{{ activity.duration }}</td>
-                <td>{{ activity.date }}</td>
-            </tr>
-        {% endfor %}
-        </table>
-
+        {% render_table table %}
     </div>
     <div class="tab-pane fade" id="members" role="tabpanel" aria-labelledby="members-tab">
 

@@ -132,3 +132,6 @@ dmypy.json
 #local stuff
 local.py
 local.html
+
+# IDEs
+.vscode

@@ -1,0 +1,18 @@
+.details {
+    padding-top: 24px;
+}
+
+.right {
+    text-align: right;
+    padding-right: 24px;
+}
+.odd {
+        background-color: rgba(150,150,150,0.06);
+}
+.even {
+        background-color: rgba(150,150,150,0.03);
+}
+
+th a {
+    color: rgba(50,50,80,0.8);
+}
