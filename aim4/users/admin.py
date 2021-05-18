@@ -20,5 +20,5 @@ class CustomUserAdmin(UserAdmin):
 	readonly_fields = UserAdmin.readonly_fields
 	list_editable = ('is_staff', 'is_superuser', )
 	fieldsets = UserAdmin.fieldsets + (
-		('Save relation to activities', {'fields': ('relate_activities', )}),
+		('Save relation to activities', {'fields': ('relate_activities', 'update_distances', )}),
     )
