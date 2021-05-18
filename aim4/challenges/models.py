@@ -109,6 +109,12 @@ class Challenge(BaseModel):
 
         self.update_calculated_fields()
 
+    def refresh_membership(self, membership_id):
+        for member in self.members.filter(pk = membership_id):
+            self.create_activities_for_member(member, refresh=True)
+
+        self.update_calculated_fields()
+
     def save(self, *args, **kwargs):
 
         super().save(*args, **kwargs)

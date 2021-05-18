@@ -10,7 +10,8 @@ from chartjs.colors import COLORS, next_color
 
 from aim4.activities.models import Activity
 from aim4.activities.tables import ActivityTable
-from aim4.challenges.models import Challenge
+from aim4.challenges.models import Challenge, Membership
+
 
 @login_required
 def challenges(request):
@@ -91,6 +92,21 @@ def challenge_refresh(request, challenge_id):
 
     return redirect(to=f'/challenges/{challenge.id}')
 
+@login_required
+def challenge_refresh_membership(request, challenge_id, membership_id):
+    try:
+        challenge = Challenge.objects.get(pk=challenge_id)
+
+
+        if challenge.owner and challenge.owner.id == request.user.id:
+            challenge.refresh_membership(membership_id)
+
+    except Challenge.DoesNotExist:
+        # If no Post has id post_id, we raise an HTTP 404 error.
+        raise Http404
+
+
+    return redirect(to=f'/challenges/{challenge.id}')
 
 class LineChartJSONView(BaseLineChartView):
 

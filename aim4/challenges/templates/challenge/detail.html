@@ -83,12 +83,18 @@
                 <tr>
                     <th>Name</th>
                     <th>Joined in</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
         {% for membership in challenge.memberships.all %}
             <tr>
                 <td>{{ membership.member.get_full_name }}</td>
                 <td>{{ membership.created }}</td>
+                <td>
+                    {% if is_owner %}
+                        <a href="/challenges/{{ challenge.id }}/refresh_membership/{{ membership.id }}" class="btn btn-primary">Refresh User</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </table>
