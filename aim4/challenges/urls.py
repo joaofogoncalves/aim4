@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^(?P<challenge_id>\d+)$', challenge_detail, name='challenge_detail'),
     url(r'^(?P<challenge_id>\d+)/join$', challenge_join, name='challenge_join'),
     url(r'^(?P<challenge_id>\d+)/refresh$', challenge_refresh, name='challenge_refresh'),
-    url(r'^(?P<challenge_id>\d+)/refresh_membership/(?P<membership_id>\d+)$', challenge_refresh, name='challenge_refresh_membership'),
+    url(r'^(?P<challenge_id>\d+)/refresh_membership/(?P<membership_id>\d+)$', challenge_refresh_membership, name='challenge_refresh_membership'),
 
     url(r"^line_chart/json/$", line_chart_json, name="line_chart_json"),
 ]
