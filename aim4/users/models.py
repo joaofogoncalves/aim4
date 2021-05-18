@@ -27,6 +27,7 @@ class User(AbstractUser):
     """
 
     relate_activities = models.BooleanField(default=True)
+    update_distances = models.BooleanField(default=True)
 
     def get_sports_socials(self):
         sport_providers = ['strava'] #Maybe later define somewhere else
@@ -76,10 +77,12 @@ class User(AbstractUser):
                     new_activity = self.activities.get(original_id=strava_id)
 
                 new_activity.date = strava_activity.start_date_local
-                new_activity.distance = strava_activity.distance
-                new_activity.duration = strava_activity.elapsed_time
                 new_activity.name = strava_activity.name
                 new_activity.type = strava_activity.type
+                new_activity.duration = strava_activity.elapsed_time
+
+                if self.update_distances:
+                    new_activity.distance = strava_activity.distance
 
                 if self.relate_activities:
                     new_activity.member = self
