@@ -12,9 +12,9 @@ class Activity(BaseModel):
     date = models.DateTimeField(null=False, blank=False)
     distance = models.FloatField(default=0, null=False, blank=False)
     duration = models.DurationField(default=0, null=False, blank=False)
-    name = models.CharField(max_length=250, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    type = models.CharField(max_length=250, null=True, blank=True)
+    type = models.CharField(max_length=255, null=True, blank=True)
 
     #to detect and prevent duplicates
     provider = models.CharField(max_length=250, default='')
