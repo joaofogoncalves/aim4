@@ -77,7 +77,7 @@ class User(AbstractUser):
                     new_activity = self.activities.get(original_id=strava_id)
 
                 new_activity.date = strava_activity.start_date_local
-                new_activity.name = strava_activity.name[:250]
+                new_activity.name = strava_activity.name
                 new_activity.description = strava_activity.description
                 new_activity.type = strava_activity.type
                 new_activity.duration = strava_activity.elapsed_time
