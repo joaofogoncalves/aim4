@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 import datetime
 from social_django.utils import load_strategy
@@ -74,7 +75,7 @@ class User(AbstractUser):
                     new_activity.provider = provider_name
 
                 else:
-                    new_activity = self.activities.get(original_id=strava_id)
+                    new_activity = Activity.objects.get(original_id=strava_id)
 
                 new_activity.date = strava_activity.start_date_local
                 new_activity.name = strava_activity.name
@@ -93,9 +94,11 @@ class User(AbstractUser):
                 new_activity.save()
 
                 new_activities.append(new_activity)
-        except:
-            print('User f{self} ha no permissions on strava')
-            strava_social.delete()
+        except Exception as exc:
+            if settings.DEBUG:
+                raise exc
+            print(f'User {self} ha no permissions on strava')
+            #strava_social.delete()
 
         return new_activities
 
