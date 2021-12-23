@@ -51,10 +51,7 @@ class User(AbstractUser):
     def get_strava_activities(self, strava_social, from_date=None):
         new_activities = []
         provider_name = 'strava'
-        if self.relate_activities:
-            existing_ids = self.activities.filter(provider=provider_name).values_list('original_id', flat=True)
-        else:
-            existing_ids = Activity.objects.filter(provider=provider_name).values_list('original_id', flat=True)
+        existing_ids = Activity.objects.filter(provider=provider_name).values_list('original_id', flat=True)
 
         # get access token
         token = strava_social.get_access_token(load_strategy())
