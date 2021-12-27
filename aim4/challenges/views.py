@@ -5,11 +5,12 @@ from django.http.response import Http404
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from django.db.models.functions import TruncDate
+#from aim4.aim4.activities.tables import MembersTable, ActivityTable
 from chartjs.views.lines import BaseLineChartView
 from chartjs.colors import COLORS, next_color
 
 from aim4.activities.models import Activity
-from aim4.activities.tables import ActivityTable
+from aim4.activities.tables import ActivityTable, MembersTable
 from aim4.challenges.models import Challenge, Membership
 
 
@@ -46,6 +47,7 @@ def challenge_detail(request, challenge_id):
             is_owner = False
 
         if is_member:
+            #table=MembersTable(challenge.activities.all())
             table = ActivityTable(challenge.activities.all())
             table.order_by = request.GET.get('sort', '-date')
             table.paginate(page=request.GET.get("page", 1), per_page=25)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 from aim4.mixins import BaseModel
 from aim4.users.models import User
 from aim4.activities.models import Activity
@@ -138,6 +139,10 @@ class Membership(BaseModel):
     def save(self, *args, **kwargs):
 
         super().save(*args, **kwargs)
+
+    @property
+    def total_distance(self):
+        return Activity.objects.filter(member=self.member, challenges=self.challenge).aggregate(Sum('distance'))['distance__sum'] or 0
 
 class Contribution(BaseModel):
 
