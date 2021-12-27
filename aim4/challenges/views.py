@@ -5,12 +5,12 @@ from django.http.response import Http404
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from django.db.models.functions import TruncDate
-#from aim4.aim4.activities.tables import MembersTable, ActivityTable
+#from aim4.aim4.activities.tables import ActivityTable
 from chartjs.views.lines import BaseLineChartView
 from chartjs.colors import COLORS, next_color
 
 from aim4.activities.models import Activity
-from aim4.activities.tables import ActivityTable, MembersTable
+from aim4.activities.tables import ActivityTable
 from aim4.challenges.models import Challenge, Membership
 
 

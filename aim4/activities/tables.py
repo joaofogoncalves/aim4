@@ -15,12 +15,3 @@ class ActivityTable(tables.Table):
 
     def render_member(self, value):
         return value.get_full_name()
-
-
-class MembersTable(tables.Table):
-
-    class Meta:
-        template_name = "django_tables2/bootstrap4.html"
-
-    member = tables.Column(verbose_name='User')
-    distance = tables.Column()
