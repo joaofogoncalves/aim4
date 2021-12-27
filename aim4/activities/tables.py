@@ -15,4 +15,3 @@ class ActivityTable(tables.Table):
 
     def render_member(self, value):
         return value.get_full_name()
-    
