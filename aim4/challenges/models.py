@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.conf import settings
 import requests
 import json
+import datetime
 
 from datetime import timedelta
 class Challenge(BaseModel):
@@ -143,6 +144,11 @@ class Membership(BaseModel):
     @property
     def total_distance(self):
         return Activity.objects.filter(member=self.member, challenges=self.challenge).aggregate(Sum('distance'))['distance__sum'] or 0
+
+    @property
+    def total_distance_current_year(self):
+        today = datetime.datetime.now()
+        return Activity.objects.filter(member=self.member, challenges=self.challenge, date__year = today.year).aggregate(Sum('distance'))['distance__sum'] or 0
 
 class Contribution(BaseModel):
 

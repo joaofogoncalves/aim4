@@ -46,11 +46,11 @@
         <dd class="col-sm-9">
             <dl class="row">
                 <dt class="col-sm-4">Travelled distance</dt>
-                <dd class="col-sm-8">{{challenge.distance }} m</dd>
+                <dd class="col-sm-8">{{ challenge.distance }} m</dd>
                 <dt class="col-sm-4">Velocity</dt>
-                <dd class="col-sm-8">{{challenge.velocity }} m/s</dd>
+                <dd class="col-sm-8">{{ challenge.velocity }} m/s</dd>
                 <dt class="col-sm-4">ETA</dt>
-                <dd class="col-sm-8">{{challenge.eta }}</dd>
+                <dd class="col-sm-8">{{ challenge.eta }}</dd>
             </dl>
         </dd>
 
@@ -65,21 +65,23 @@
 
 </div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="members">
-        <button class="nav-link active" id="members-tab" data-bs-toggle="tab" data-bs-target="#members" type="button" role="tab" aria-controls="members" aria-selected="true">Members</button>
-      </li>
+    <li class="nav-item" role="leaderboard">
+        <button class="nav-link active" id="leaderboard-tab" data-bs-toggle="tab" data-bs-target="#leaderboard" type="button" role="tab" aria-controls="leaderboard" aria-selected="true">Leaderboard (General)</button>
+    </li>
+    <li class="nav-item" role="leaderboard_currentyear">
+        <button class="nav-link" id="leaderboard_currentyear-tab" data-bs-toggle="tab" data-bs-target="#leaderboard_currentyear" type="button" role="tab" aria-controls="leaderboard_currentyear" aria-selected="true">Leaderboard ({% now "Y" %})</button>
+    </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="activities-tab" data-bs-toggle="tab" data-bs-target="#activities" type="button" role="tab" aria-controls="activities" aria-selected="false">Activities</button>
+      <button class="nav-link" id="activities-tab" data-bs-toggle="tab" data-bs-target="#activities" type="button" role="tab" aria-controls="activities" aria-selected="true">Activities</button>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="members" role="tabpanel" aria-labelledby="members-tab">
-
+    <div class="tab-pane fade show active" id="leaderboard" role="tabpanel" aria-labelledby="leaderboard-tab">
         <table class="table table-sm">
             <thead class="thead-light">
                 <tr>
                     <th>Name</th>
-                    <th>Total Distance</th>
+                    <th>Total Distance (m)</th>
                     <th>Joined in</th>
                     <th>Actions</th>
                 </tr>
@@ -97,15 +99,38 @@
             </tr>
         {% endfor %}
         </table>
-
+    </div>
+    <div class="tab-pane fade" id="leaderboard_currentyear" role="tabpanel" aria-labelledby="leaderboard_currentyear-tab">
+        <table class="table table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Total Distance (m)</th>
+                    <th>Joined in</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        {% for membership in challenge.memberships.all|dictsortreversed:"total_distance_current_year" %}
+            <tr>
+                <td>{{ membership.member.get_full_name }}</td>
+                <td>{{ membership.total_distance_current_year }}</td>
+                <td>{{ membership.created }}</td>
+                <td>
+                    {% if is_owner %}
+                        <a href="/challenges/{{ challenge.id }}/refresh_membership/{{ membership.id }}" class="btn btn-primary">Refresh User</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
     </div>
     <div class="tab-pane fade" id="activities" role="tabpanel" aria-labelledby="home-tab">
         {% render_table table %}
     </div>
   </div>
 
-
 {% else %}
+
 <a href="/challenges/{{ challenge.id }}/join" class="btn btn-primary">Join</a>
 
 {% endif %}
