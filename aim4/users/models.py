@@ -53,8 +53,15 @@ class User(AbstractUser):
         provider_name = 'strava'
         existing_ids = Activity.objects.filter(provider=provider_name).values_list('original_id', flat=True)
 
+
+        try:
         # get access token
-        token = strava_social.get_access_token(load_strategy())
+            token = strava_social.get_access_token(load_strategy())
+        except Exception as exc:
+            if settings.DEBUG:
+                raise exc
+            print(f'User {self} ha no active token')
+
 
         # get activity details
         client = Client()
