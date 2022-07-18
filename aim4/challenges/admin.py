@@ -14,7 +14,7 @@ class ChallengeAdmin(admin.ModelAdmin):
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ['member', 'challenge', 'created', 'updated']
     list_filter = ['challenge', ]
-    search_fields = ['member']
+    search_fields = ['member__username']
 
 @admin.register(Contribution)
 class ContributionAdmin(admin.ModelAdmin):
