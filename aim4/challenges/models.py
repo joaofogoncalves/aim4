@@ -179,6 +179,11 @@ def notify_slack(sender, instance, action, reverse, model, pk_set, **kwarg):
         for activity in activities:
             challenge = instance
 
+            if activity.used_internal_conversion:
+                conversion_string = f' (auto - {activity.internal_conversion_metric}km/h )'
+            else:
+                conversion_string = ''
+
             if challenge and activity and challenge.slack_endpoint_url:
                 message_dict = {
                     "channel": challenge.slack_channel,
@@ -190,7 +195,7 @@ def notify_slack(sender, instance, action, reverse, model, pk_set, **kwarg):
                             "text": f"on {aim4_date_format(activity.date)}",
                             "fields": [
                                 { "title": "Type",  "value": activity.type, "short": True },
-                                { "title": "Distance",  "value": f"{activity.distance}m", "short": True },
+                                { "title": "Distance",  "value": f"{activity.distance}m {conversion_string}", "short": True },
                                 { "title": "Duration",  "value": aim4_duration_format(activity.duration), "short": True }
                             ],
                             "footer": "<https://aim4.live|aim4.live>"

@@ -42,8 +42,10 @@ class Activity(BaseModel):
         if distance == 0 and TYPE_To_KMH[self.type]:
             print(f'update distance {TYPE_To_KMH[self.type]} {self.duration.seconds / 3600} ')
             self.used_internal_conversion = True
-            self.internal_conversion_metric = TYPE_To_KMH[self.type]
-            self.distance =  self.internal_conversion_metric * (self.duration.seconds / 3600)
+            self.internal_conversion_metric = TYPE_To_KMH[self.type] #km/h
+
+            #conversion is on km/h so need to convert to m/h and then get duration in hours
+            self.distance = (self.internal_conversion_metric*1000) * (self.duration.seconds / 3600)
         else:
             print(f'DONT update distance {distance}')
             self.distance = distance
