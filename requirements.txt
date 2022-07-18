@@ -24,7 +24,7 @@ social-auth-app-django==4.0.0
 social-auth-core==4.0.3
 #sqlparse==0.4.1
 git+https://github.com/hozn/stravalib.git
-stravalib==0.10.2
+# stravalib==0.10.2
 toml==0.10.2
 Unidecode==1.2.0
 units==0.7
