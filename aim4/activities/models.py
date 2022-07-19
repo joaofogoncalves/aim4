@@ -1,5 +1,6 @@
 from django.db import models
 from aim4.mixins import BaseModel
+from stravalib import unithelper
 
 # Create your models here.
 
@@ -42,8 +43,9 @@ class Activity(BaseModel):
 
     def update_distances(self, distance, force=False):
 
+        distance_num_value = float(unithelper.meters(activity.distance))
 
-        if distance == 0 and TYPE_To_KMH[self.type]:
+        if distance_num_value == 0.0 and TYPE_To_KMH[self.type]:
             print(f'update distance {TYPE_To_KMH[self.type]} {self.duration.seconds / 3600} ')
             self.used_internal_conversion = True
             self.internal_conversion_metric = TYPE_To_KMH[self.type] #km/h
@@ -51,8 +53,8 @@ class Activity(BaseModel):
             #conversion is on km/h so need to convert to m/h and then get duration in hours
             self.distance = (self.internal_conversion_metric*1000) * (self.duration.seconds / 3600)
         else:
-            print(f'DONT update distance {distance}')
-            self.distance = distance
+            print(f'DONT update distance {distance_num_value}')
+            self.distance = distance_num_value
             used_internal_conversion = False
 
         if force:
