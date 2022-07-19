@@ -88,7 +88,7 @@ class User(AbstractUser):
                 new_activity.duration = strava_activity.elapsed_time
 
                 if self.update_distances:
-                    new_activity.set_distance(strava_activity.distance)
+                    new_activity.update_distances(strava_activity.distance)
 
                 if self.relate_activities:
                     new_activity.member = self
