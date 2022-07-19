@@ -43,7 +43,7 @@ class Activity(BaseModel):
 
     def update_distances(self, distance, force=False):
 
-        distance_num_value = float(unithelper.meters(activity.distance))
+        distance_num_value = float(unithelper.meters(distance))
 
         if distance_num_value == 0.0 and TYPE_To_KMH[self.type]:
             print(f'update distance {TYPE_To_KMH[self.type]} {self.duration.seconds / 3600} ')
