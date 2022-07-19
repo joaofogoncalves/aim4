@@ -10,8 +10,8 @@ TYPE_To_KMH = {
     "Walk": 5,
     "Hike": 4,
     "Ride": 20,
-    "Surfing": 2,
-    "Swim": 2,
+    "Surfing": 3,
+    "Swim": 3,
     "Yoga": 2,
     "Run": 10
 }
