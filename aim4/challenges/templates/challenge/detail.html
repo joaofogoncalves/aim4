@@ -80,6 +80,7 @@
                     <th class="th-sm">Name</th>
                     <th class="th-sm">Total Distance (m)</th>
                     <th class="th-sm">Total Distance in {% now "Y" %}</th>
+                    <th class="th-sm">Total Distance in {% now "F" %}</th>
                     <th class="th-sm">Joined in</th>
                     <th class="th-sm">Actions</th>
                 </tr>
@@ -90,6 +91,7 @@
                 <td>{{ membership.member.get_full_name }}</td>
                 <td>{{ membership.total_distance }}</td>
                 <td>{{ membership.total_distance_current_year }}</td>
+                <td>{{ membership.total_distance_current_month }}</td>
                 <td>{{ membership.created }}</td>
                 <td>
                     {% if is_owner %}
