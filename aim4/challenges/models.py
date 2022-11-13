@@ -153,7 +153,7 @@ class Membership(BaseModel):
     @property
     def total_distance_current_month(self):
         today = datetime.datetime.now()
-        return Activity.objects.filter(member=self.member, challenges=self.challenge, date__month = today.month).aggregate(Sum('distance'))['distance__sum'] or 0
+        return Activity.objects.filter(member=self.member, challenges=self.challenge, date__year = today.year, date__month = today.month).aggregate(Sum('distance'))['distance__sum'] or 0
 
 
 class Contribution(BaseModel):
