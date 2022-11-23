@@ -13,7 +13,8 @@ TYPE_To_KMH = {
     "Surfing": 3,
     "Swim": 3,
     "Yoga": 2,
-    "Run": 10
+    "Run": 10,
+    "Elliptical": 5
 }
 
 
